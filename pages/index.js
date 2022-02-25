@@ -1,42 +1,41 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../store/actions/postAction';
-import LoginDialog from '../components/login/LoginDialog';
-import Login from '../components/Login';
-import CategoryExample1 from '../components/Categroy/example1';
+import React from 'react';
+import { Grid } from '@mui/material';
+import Category from '../components/Categroy';
+import { getAllCategories } from '../services/usersServices';
 
-const Index = () => {
-  const dispatch = useDispatch();
-  const { posts } = useSelector((state) => state.post);
-
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
-
-  const pStyle = {
-    tableLayout: 'fixed',
-    wordWrap: 'break-word',
-    wordBreak: 'normal',
-    overflow: 'hidden',
+export async function getStaticProps() {
+  const { data: categoriesInfo } = await getAllCategories();
+  return {
+    props: { categoriesInfo },
+    revalidate: 60,
   };
+}
 
+const Index = ({ categoriesInfo }) => {
   return (
-    <>
-      <CategoryExample1 />
-      <ul>
-        {posts &&
-          posts.map((post) => {
-            return (
-              <li key={post}>
-                <p style={pStyle}>{post}</p>
-              </li>
-            );
-          })}
-      </ul>
-      <LoginDialog>
-        <Login />
-      </LoginDialog>
-    </>
+    <Grid container spacing={4}>
+      {categoriesInfo.map(
+        ({
+          id,
+          type = 0,
+          color = 'primary.main',
+          title,
+          description = '',
+          postCount = 'N.A.',
+        }) => {
+          return (
+            <Category
+              key={id}
+              type={type}
+              color={color}
+              title={title}
+              description={description}
+              postCount={postCount}
+            />
+          );
+        },
+      )}
+    </Grid>
   );
 };
 

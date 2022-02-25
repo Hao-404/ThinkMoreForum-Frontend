@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { postReducer } from './postReducer';
+import signReducer from './signReducer';
 
 export default combineReducers({
-  post: postReducer,
+  sign: signReducer,
 });

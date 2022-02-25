@@ -3,32 +3,32 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
+import { Toaster } from 'react-hot-toast';
+import NextClientOnly from '../components/NextClientOnly';
 import store from '../store/store';
 import Layout from '../components/Layout';
+import Navbar from '../components/Navbar';
 import createTheme from '../theme';
-import LoginFBGoogle from '../components/thirdpartylogin';
 import '../styles/main.scss';
+import '../styles/personalSetting.scss';
 
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
     <ReduxProvider store={store}>
+      <Head>
+        <title>Home | ThinkMoreForum</title>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
       <SessionProvider session={session}>
-        <Head>
-          <title>ThinkMoreForum</title>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          />
-        </Head>
         <ThemeProvider theme={createTheme()}>
           <Layout>
+            <NextClientOnly>
+              <Toaster position="top-center" reverseOrder={false} />
+              <Navbar />
+            </NextClientOnly>
             <Component {...pageProps} />
           </Layout>
         </ThemeProvider>
-        <LoginFBGoogle />
       </SessionProvider>
     </ReduxProvider>
   );
