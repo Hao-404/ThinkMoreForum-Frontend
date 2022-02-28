@@ -52,8 +52,9 @@ const Login = ({ register }) => {
             setLoading(false);
             if (fail && fail.response && fail.response.status === 403) {
               hotToast('error', 'Invalid Email or Password');
+            } else {
+              hotToast('error', `something wrong${fail}`);
             }
-            hotToast('error', `something wrong${fail}`);
           },
         ),
       );
@@ -75,11 +76,18 @@ const Login = ({ register }) => {
       <Container maxWidth="md">
         <form onSubmit={formik.handleSubmit}>
           <Typography align="center">
-            <Image src="/logo.svg" height="50" width="50" alt="logo" />
+            <Image src="/logo.png" height="55" width="55" alt="logo" />
           </Typography>
-          <br />
           <Typography color="textPrimary" variant="h4" align="center">
             Log in
+          </Typography>
+          <Typography
+            color="textSecondary"
+            sx={{ mt: 2 }}
+            variant="body2"
+            align="center"
+          >
+            Where the Exploration Begins
           </Typography>
           <Box sx={{ my: 4 }}>
             <TextField

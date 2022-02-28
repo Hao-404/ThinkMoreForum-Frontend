@@ -1,6 +1,6 @@
 import React from 'react';
 import NextLink from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import {
   Avatar,
   Box,
@@ -11,15 +11,18 @@ import {
   Popover,
   Typography,
 } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
+
 import { useDispatch } from 'react-redux';
-import CogIcon from '../../icons/cog';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import UserCircleIcon from '../../icons/user-circle';
+import CogIcon from '../../icons/cog';
 import { logoutAction } from '../../store/actions/signAction';
 
 const AccountPopover = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
   const dispatch = useDispatch();
+  const router = useRouter();
   const user = {
     avatar: '/logo.png',
     name: 'User name',
@@ -62,12 +65,22 @@ const AccountPopover = (props) => {
         >
           <Typography variant="body1">{user.name}</Typography>
           <Typography color="textSecondary" variant="body2">
-            ThinkMoreFourm
+            Role Name
           </Typography>
         </Box>
       </Box>
       <Divider />
       <Box sx={{ my: 1 }}>
+        <NextLink href="/admin" passHref>
+          <MenuItem component="a">
+            <ListItemIcon>
+              <ManageAccountsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              primary={<Typography variant="body1">Admin</Typography>}
+            />
+          </MenuItem>
+        </NextLink>
         <NextLink href="/profile" passHref>
           <MenuItem component="a">
             <ListItemIcon>
@@ -75,16 +88,6 @@ const AccountPopover = (props) => {
             </ListItemIcon>
             <ListItemText
               primary={<Typography variant="body1">Profile</Typography>}
-            />
-          </MenuItem>
-        </NextLink>
-        <NextLink href="/admin" passHref>
-          <MenuItem component="a">
-            <ListItemIcon>
-              <CogIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText
-              primary={<Typography variant="body1">Admin</Typography>}
             />
           </MenuItem>
         </NextLink>
@@ -102,7 +105,7 @@ const AccountPopover = (props) => {
         <MenuItem
           onClick={() => {
             dispatch(logoutAction());
-            Router.push('/');
+            router.push('/');
             onClose();
           }}
         >
